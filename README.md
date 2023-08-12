@@ -1,6 +1,6 @@
 # PointBLIP
 
-This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="25" /> </a>, a 3D multi-modality model that aligns **3D point clouds** with **language** inspired by 2D-multimodal model BLIP. 
+This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15" /> </a>, a 3D multi-modality model that aligns **3D point clouds** with **language** inspired by 2D-multimodal model BLIP. 
 
 - We directly align the representation of point cloud and language without the need to align with image modality additionally as classical methods. 
 - Furthermore, we explore the great potential of point clouds for various tasks on 3D multimodal understanding and generation.
@@ -34,7 +34,7 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="25
 
 ### Our PointBLIP：
 
-<a>  <img src="./figure/pointblip.png"  width="800" /> </a>
+<a>  <img src="./figure/pointblip.png"  width="750" /> </a>
 
 *ULIP* is a representative work on aligning point clouds with other modality information (Upper part). However, it needs to align 3D point clouds with both images and texts during training just to make the model gain the ability of 3D semantic understanding. 
 
