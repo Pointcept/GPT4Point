@@ -1,6 +1,6 @@
 # PointBLIP
 
-This project presents **PointBLIP** <img src="C:\Users\10150\AppData\Roaming\Typora\typora-user-images\image-20230812214132991.png" alt="image-20230812214132991" style="zoom:15%;" />, a 3D multi-modality model that aligns **3D point clouds** with **language** inspired by 2D-multimodal model BLIP. 
+This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="25" /> </a>, a 3D multi-modality model that aligns **3D point clouds** with **language** inspired by 2D-multimodal model BLIP. 
 
 - We directly align the representation of point cloud and language without the need to align with image modality additionally as classical methods. 
 - Furthermore, we explore the great potential of point clouds for various tasks on 3D multimodal understanding and generation.
@@ -133,6 +133,6 @@ result will be saved as `.json` file in `lavis/output` with following formats:
         "2d_caption": "gt caption when training BLIP-3D",
         "caption": "generated caption by BLIP-3D"
     },
-    ...
+    
 ]
 ```
