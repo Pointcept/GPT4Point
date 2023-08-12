@@ -7,11 +7,16 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 
 
 
-
 ## <img src="./figure/icon_2.png" width="25" /> Overview
 
 <demo> 
+<video width="900" controls>
+  <source src="figure/video_demo1.mp4" type="video/mp4">
+</video>
 
+<video width="900" controls>
+  <source src="figure/video_demo2.mp4" type="video/mp4">
+</video>
 
 
 ## <img src="./figure/icon_1.png" width="25" /> News
