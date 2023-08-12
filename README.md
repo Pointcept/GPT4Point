@@ -125,17 +125,17 @@ the abs path of converted dataset should be registered in `lavis/configs/default
 $ conda activate lavis
 # use facebook/opt-2.7b:
 # stage 1:
-$ python -m torch.distributed.run --nproc_per_node=8 train.py --cfg-path lavis/projects/blip2/train/pretrain_state1_point_obja.yaml
+$ python -m torch.distributed.run --nproc_per_node=8 train.py --cfg-path lavis/projects/point_blip/train/pretrain_stage1_point_obja.yaml
 # stage 2:
-$ python -m torch.distributed.run --nproc_per_node=8 train.py --cfg-path lavis/projects/blip2/train/pretrain_stage2_point_obja.yaml
+$ python -m torch.distributed.run --nproc_per_node=8 train.py --cfg-path lavis/projects/point_blip/train/pretrain_stage2_point_obja.yaml
 ```
-
+before stage2 training, you need to place stage1 trained checkpoint under `model` dir and change the corresponding config path.
 
 
 ### Evaluation
 
 ```shell
-$ python -m torch.distributed.run --nproc_per_node=8 evaluate.py --cfg-path lavis/projects/blip2/eval/caption_objaverse_opt2.7b_eval.yaml
+$ python -m torch.distributed.run --nproc_per_node=8 evaluate.py --cfg-path lavis/projects/point_blip/eval/caption_objaverse_opt2.7b_eval.yaml
 ```
 
 result will be saved as `.json` file in `lavis/output` with following formats:
