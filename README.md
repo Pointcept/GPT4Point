@@ -11,7 +11,7 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 
 ## :fire:Demos
 <div align=center>
-[![Video Demo1](./figure/video_demo_1.png)](https://youtu.be/4SqfmAKxH5w)
+[![Video Demo1](https://drive.google.com/file/d/1h6JCbbxYMq4Cu_heOiqzZiT-8ftjGpYX/view?usp=sharing)](https://youtu.be/4SqfmAKxH5w)
 </div>
 
 <div align=center>
