@@ -16,7 +16,7 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 
 ## News
 
-🔥 2023/08/13:  Two-stage Pretraining code of PointBind has been released.
+🔥 2023/08/13:  Two-stage Pre-training code of PointBLIP has been released.
 
 🔥 2023/08/13:  All datasets used and result files has been uploaded.
 
