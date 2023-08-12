@@ -29,7 +29,7 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 ## PointBLIP
 
 ### Previous method ULIP：
-<p align="center"> <a>  <img src="./figure/ulip.png"  width="960" /> </a> </p>
+<p align="center"> <a>  <img src="./figure/ulip.png"  width="900" /> </a> </p>
 
 
 ### Our PointBLIP：
@@ -38,7 +38,7 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 
 *ULIP* is a representative work on aligning point clouds with other modality information (Upper part). However, it needs to align 3D point clouds with both images and texts during training just to make the model gain the ability of 3D semantic understanding. 
 
-To simplify this approach, our **$ {\ PointBLIP\ } $** considers directly aligning texts with 3D point clouds (Lower part). Besides, we add an LLM(Large Language Model) to the basis of joint representation learning, which fully promote the combination of 3D point cloud and text representation, and successfully apply to multiple downstream tasks.
+To simplify this approach, our ${\ PointBLIP\ }$ considers directly aligning texts with 3D point clouds (Lower part). Besides, we add an LLM(Large Language Model) to the basis of joint representation learning, which fully promote the combination of 3D point cloud and text representation, and successfully apply to multiple downstream tasks.
 
 Our PointBLIP exhibits 3 main characters:
 
