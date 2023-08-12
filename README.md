@@ -44,7 +44,7 @@ Our PointBLIP exhibits 3 main characters:
 
 - $\color{darkorange}{Directly\ Align\ Texts\ with\ 3D\ Point\ Clouds\ .}$ To improve the recognition ability and semantic understanding of 3D backbone models,   we directly align the representation of 3D point clouds and texts. We doesn't introduce additional infomation of image representions during training, which simplifies the training process and fully aligns the representations.
 - $\color{darkorange}{Bridge\ Modality\ Gap\ Guided\ By\ BLIP2\ .}$ Inspired by 2D multi-modality model *BLIP2*, we ingeniously utilize both pretrained 3D point cloud models and large language models. We bridge the modality gap between 3D point clouds and texts using a trainable module (text encoder in the figure) pretrained in two-stages.
-- $\color{darkorange}{LLM\ Empowers\ a\ Wide\ Range\ of\ 3D\ semantic\ tasks\ .}$  Incorporating the large language model enables the capability to perform a broader spectrum of 3D semantic understanding and genaration tasks. Besides engaging in a 3D classification task directly using the trained representations, ***PointBLIP*** can perform 3D caption generation, 3D retrieval and 3D question answering tasks, fully exploring the semantic capabilities of 3D point clouds
+- $\color{darkorange}{LLM\ Empowers\ a\ Wide\ Range\ of\ 3D\ Semantic\ Tasks\ .}$  Incorporating the large language model enables the capability to perform a broader spectrum of 3D semantic understanding and genaration tasks. Besides engaging in a 3D classification task directly using the trained representations, ***PointBLIP*** can perform 3D caption generation, 3D retrieval and 3D question answering tasks, fully exploring the semantic capabilities of 3D point clouds
 
 
 
