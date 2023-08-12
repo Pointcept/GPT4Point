@@ -9,9 +9,14 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 
 ## <img src="./figure/icon_2.png" width="25" /> Overview
 
+## :fire:Demos
+<div align=center>
+[![Video Demo1](./figure/video_demo_1.png)](https://youtu.be/4SqfmAKxH5w)
+</div>
 
-[Click here to view the video on YouTube](https://youtu.be/4SqfmAKxH5w)
-[Click here to view the video on YouTube](https://youtu.be/-k39MzcgPZg)
+<div align=center>
+[![Video Demo1](./figure/video_demo_2.png)](https://youtu.be/-k39MzcgPZg)
+</div>
 
 
 
