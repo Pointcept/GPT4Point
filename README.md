@@ -73,26 +73,6 @@ Given 3D point cloud and text input,  PointBLIP can generate answers to question
 
 
 
-
-## <img src="./figure/icon_6.png" width="25" /> Zero-Shot 3D classification
-
-**TODO: modify descriptions and experiment table**
-
-For 3D zero-shot classification, please follow [DATASET.md](https://github.com/lulutang0608/Point-BERT/blob/master/DATASET.md) to download ModelNet40, and put it under `data/modelnet40_normal_resampled/`. Then run `bash scripts/pointbind_i2pmae.sh` or `bash scripts/pointbind_pointbert.sh` for Point-Bind with I2P-MAE or Point-BERT encoder.
-
-Zero-shot classification accuracy comparison:
-|                            Model                             |                         Encoder                          | ModeNet40 (%) |
-| :----------------------------------------------------------: | :------------------------------------------------------: | :-----------: |
-|    [PointCLIP](https://github.com/ZrrSkywalker/PointCLIP)    |                         2D CLIP                          |     20.2      |
-|          [ULIP](https://github.com/salesforce/ULIP)          |                        Point-BERT                        |     60.4      |
-| [PointCLIP V2](https://github.com/yangyangyang127/PointCLIP_V2) |                         2D CLIP                          |     64.2      |
-|         [ULIP 2](https://github.com/salesforce/ULIP)         |                        Point-BERT                        |     66.4      |
-|                          Point-Bind                          | [Point-BERT](https://github.com/lulutang0608/Point-BERT) |     76.3      |
-|                          Point-Bind                          |    [I2P-MAE](https://github.com/ZrrSkywalker/I2P-MAE)    |   **78.0**    |
-|                          PointBLIP                           | [Point-BERT](https://github.com/lulutang0608/Point-BERT) |               |
-
-
-
 ## <img src="./figure/icon_7.png" width="25" /> Get Started
 
 ### Preparation
