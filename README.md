@@ -41,7 +41,7 @@ Observably, the white captions exhibit a greater capacity to convey intricate de
 
 ### Our PointBLIP：
 
-<p align="center">  <a>  <img src="./figure/pointblip.png"  width="900" /> </a> </p>
+<p align="center">  <a>  <img src="./figure/pointblip_1.png"  width="900" /> </a> </p>
 
 *ULIP* is a representative work on aligning point clouds with other modality information (Upper part). However, it needs to align 3D point clouds with both images and texts during training just to make the model gain the ability of 3D semantic understanding. 
 
