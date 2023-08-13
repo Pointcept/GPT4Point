@@ -8,7 +8,7 @@ model:
   load_finetuned: False
 
   pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_opt2.7b.pth"
-  finetuned: ""
+  finetuned: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained_opt2.7b.pth"
 
   # vit encoder
   point_model: ulip_point_bert
