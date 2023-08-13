@@ -33,7 +33,7 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 ## <img src="./figure/icon_3.png" width="25" /> PointBLIP
 
 ### Previous method ULIP：
-<p align="center"> <a>  <img src="./figure/ulip.png"  width="340" /> </a> </p>
+<p align="center"> <a>  <img src="./figure/ulip.png"  width="600" /> </a> </p>
 
 
 ### Our PointBLIP：
