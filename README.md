@@ -10,7 +10,10 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 ## <img src="./figure/icon_2.png" width="25" /> Overview
 
 ## :fire:Demos
-![Example GIF](/figure/video_demo1.gif)
+<p align="center"> <a>  
+<img src="./figure/video_demo1.gif"  width="900" /> 
+<img src="./figure/video_demo2.gif"  width="900" />
+</a> </p>
 
 
 
