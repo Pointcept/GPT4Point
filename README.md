@@ -92,15 +92,18 @@ $ pip install positional_encodings
 
 #### 2. Prepare the dataset
 
-```shell
-git clone https://github.com/Pointcept/PointBLIP.git
-cd PointBLIP
-mkdir data
-# objaverse
-ln -s /path/to/objaverse
-```
+We use **Objaverse** (80k objects) to train and evaluate models. We use the point cloud and text description label provided by ULIP2. You can download the datasets directly [here](https://console.cloud.google.com/storage/browser/sfr-ulip-code-release-research).
 
-download **link** to `blip-3d/data/merged_data_new.json`
+
+```text
+pointblip
+├── figure
+├── lavis
+├── data
+│ ├── objaverse_pc_parallel
+│ ├── merged_data_new.json
+│ ├── common_ids.text
+```
 
 #### 3. convert dataset into training format
 
