@@ -93,8 +93,8 @@ $ pip install positional_encodings
 #### 2. Prepare the dataset
 
 ```shell
-git clone <Our repo>
-cd blip-3d
+git clone https://github.com/Pointcept/PointBLIP.git
+cd PointBLIP
 mkdir data
 # objaverse
 ln -s /path/to/objaverse
