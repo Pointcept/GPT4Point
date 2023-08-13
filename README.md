@@ -33,12 +33,12 @@ This project presents **PointBLIP**<a>  <img src="./figure/cloud.png"  width="15
 ## <img src="./figure/icon_3.png" width="25" /> PointBLIP
 
 ### Previous method ULIP：
-<p align="center"> <a>  <img src="./figure/ulip.png"  width="900" /> </a> </p>
+<p align="center"> <a>  <img src="./figure/ulip.png"  width="340" /> </a> </p>
 
 
 ### Our PointBLIP：
 
-<p align="center">  <a>  <img src="./figure/pointblip.png"  width="850" /> </a> </p>
+<p align="center">  <a>  <img src="./figure/pointblip.png"  width="900" /> </a> </p>
 
 *ULIP* is a representative work on aligning point clouds with other modality information (Upper part). However, it needs to align 3D point clouds with both images and texts during training just to make the model gain the ability of 3D semantic understanding. 
 
