@@ -1,6 +1,4 @@
-<p align="center"> <a>  
-<img src="./figure/logo.png"  width="400" /> 
-</a> </p>
+# PointBLIP: A Point Cloud Multi-modal model Embracing Diverse Data without Reliance on Image Domain
 
 <p align="center">
   	<a href="https://img.shields.io/badge/version-v0.1.0-blue">
@@ -14,10 +12,6 @@
   	</a>
     <br />
 </p>
-
-
-# PointBLIP: A Point Cloud Multi-modal model Embracing Diverse Data without Reliance on Image Domain
-
 
 ## <img src="./figure/icon_2.png" width="25" /> Overview
 
