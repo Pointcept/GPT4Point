@@ -114,7 +114,7 @@ pointblip
 ├── data
 │ ├── objaverse_pc_parallel
 │ ├── merged_data_new.json
-│ ├── common_ids.text
+│ ├── common_ids.txt
 ```
 
 #### 3. convert dataset into training format
