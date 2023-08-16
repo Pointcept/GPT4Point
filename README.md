@@ -1,4 +1,4 @@
-# PointBLIP: A Unified Framework for Point-Language Understanding and Generation without Reliance on Image Domain
+# PointBLIP: A Unified Framework for Point-Language Understanding without Reliance on Image Domain
 
 <p align="center">
   	<a href="https://img.shields.io/badge/version-v0.1.0-blue">
