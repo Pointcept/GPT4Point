@@ -130,12 +130,15 @@ def init_distributed_mode(args):
     #     return
 
     launcher=infer_launcher()
-
     args.distributed = True
     args.dist_backend = "nccl"
     if launcher == 'slurm':
         _init_dist_slurm(args=args,backend=args.dist_backend, init_backend='torch')
     else:
+        if "RANK" in os.environ and "WORLD_SIZE" in os.environ:
+            args.rank = int(os.environ["RANK"])
+            args.world_size = int(os.environ["WORLD_SIZE"])
+            args.gpu = int(os.environ["LOCAL_RANK"])
         print(
             "| distributed init (rank {}, world {}): {}".format(
                 args.rank, args.world_size, args.dist_url
