@@ -561,11 +561,11 @@ class RunnerBase:
         Save the checkpoint at the current epoch.
         """
         model_no_ddp = self.unwrap_dist_model(self.model)
-        param_grad_dic = {
-            k: v.requires_grad for (k, v) in model_no_ddp.named_parameters()
-        }
-        with open('/home/qizhangyang/others/running_point_qformer_grad.json', 'w') as file: 
-            json.dump(param_grad_dic, file)
+        # param_grad_dic = {
+        #     k: v.requires_grad for (k, v) in model_no_ddp.named_parameters()
+        # }
+        # with open('/home/qizhangyang/others/running_point_qformer_grad.json', 'w') as file: 
+        #     json.dump(param_grad_dic, file)
         # param_grad_dic = {}
         # for (k, v) in model_no_ddp.named_parameters():
         #     if k == 'Qformer.cls.predictions.decoder.weight':

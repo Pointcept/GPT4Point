@@ -9,6 +9,9 @@ data/*
 model/*
 *.pth
 *.pt
+train.sh
+test.sh
+train_dist.sh
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
