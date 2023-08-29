@@ -14,7 +14,12 @@ from lavis.datasets.builders.caption_builder import (
     ObjaverseCapBuilder,
     ObjaverseCap_tune_Builder
     
+    
 )
+from lavis.datasets.builders.retrieval3d_builder import (
+    ObjaverseRetBuilder
+)
+
 # from lavis.datasets.builders.image_text_pair_builder import (
 #     ConceptualCaption12MBuilder,
 #     ConceptualCaption3MBuilder,

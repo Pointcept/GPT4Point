@@ -66,6 +66,7 @@ class PointBlipQformer(PointBlipBase):
 
     PRETRAINED_MODEL_CONFIG_DICT = {
         "pretrain": "configs/models/point_blip/point_blip_pretrain_opt2.7b.yaml",
+        "coco": "configs/models/point_blip/point_blip_coco.yaml",
     }
 
     def __init__(
@@ -148,7 +149,7 @@ class PointBlipQformer(PointBlipBase):
         '''Input'''
         # image = samples["image"]                                                            # [bs, 3, 224, 224]
         text = samples["text_input"]                                                        # list: bs
-        image = samples['point']                                                            # [bs, 8192, 3]
+        point = samples['point']                                                            # [bs, 8192, 3]
 
         '''PIT and Point Q-Former'''
         '''We do not use the Point_Q-Former, cause we make the Q-Former be the point branch'''
@@ -174,22 +175,22 @@ class PointBlipQformer(PointBlipBase):
         # image_embeds = self.ln_vision(self.visual_encoder(image))                           # [bs, 3, 224, 224] -> [bs, 257, 1408]
 
         # make the point as the image
-        image_embeds = self.point_encoder(image)                                            # [bs, 8192, 3] -> [bs, 512, 384]
-        image_embeds = image_embeds @ self.pc_projection                                    # [bs, 512, 384] -> [bs, 512, 768]        
+        point_embeds = self.point_encoder(point)                                            # [bs, 8192, 3] -> [bs, 512, 384]
+        point_embeds = point_embeds @ self.pc_projection                                    # [bs, 512, 384] -> [bs, 512, 768]        
         
-        image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(             # [bs, 257]
-            image.device
+        point_atts = torch.ones(point_embeds.size()[:-1], dtype=torch.long).to(             # [bs, 257]
+            point.device
         )
-        query_tokens = self.query_tokens.expand(image_embeds.shape[0], -1, -1)              # [1, 32, 768] -> [bs, 32, 768]
+        query_tokens = self.query_tokens.expand(point_embeds.shape[0], -1, -1)              # [1, 32, 768] -> [bs, 32, 768]
         query_output = self.Qformer.bert(
             query_embeds=query_tokens,              # [bs, 32, 768]
-            encoder_hidden_states=image_embeds,     # [bs, 257, ***1408***]
-            encoder_attention_mask=image_atts,      # [bs, 257]
+            encoder_hidden_states=point_embeds,     # [bs, 257, ***1408***]
+            encoder_attention_mask=point_atts,      # [bs, 257]
             use_cache=True,
             return_dict=True,
         )
 
-        image_feats = F.normalize(
+        point_feats = F.normalize(
             self.vision_proj(query_output.last_hidden_state), dim=-1
         )
 
@@ -200,7 +201,7 @@ class PointBlipQformer(PointBlipBase):
             truncation=True,
             max_length=self.max_txt_len,
             return_tensors="pt",
-        ).to(image.device)
+        ).to(point.device)
         text_output = self.Qformer.bert(
             text_tokens.input_ids,
             attention_mask=text_tokens.attention_mask,
@@ -229,13 +230,13 @@ class PointBlipQformer(PointBlipBase):
 
         
         ###============== Image-text Contrastive ===================###
-        image_feats_all = concat_all_gather(                                                # [bs, 32, 256] -> [bs, 32, 256]
-            image_feats
+        point_feats_all = concat_all_gather(                                                # [bs, 32, 256] -> [bs, 32, 256]
+            point_feats
         )  # [batch_size*num_gpu, num_query_tokens, embed_dim]
         text_feat_all = concat_all_gather(text_feat)  # [batch_size*num_gpu, embed_dim]     # [bs, 256] -> [bs, 256]
 
         sim_q2t = torch.matmul(                                                             # [bs, bs, 32]
-            image_feats.unsqueeze(1), text_feat_all.unsqueeze(-1)
+            point_feats.unsqueeze(1), text_feat_all.unsqueeze(-1)
         ).squeeze()
         # [batch_size, batch_size*num_gpu, num_query_tokens]
 
@@ -245,7 +246,7 @@ class PointBlipQformer(PointBlipBase):
 
         # text-query similarity: [batch_size, batch_size*num_gpu, num_query_tokens]
         sim_t2q = torch.matmul(
-            text_feat.unsqueeze(1).unsqueeze(1), image_feats_all.permute(0, 2, 1)
+            text_feat.unsqueeze(1).unsqueeze(1), point_feats_all.permute(0, 2, 1)
         ).squeeze()
 
         # text-image similarity: aggregate across all query tokens
@@ -253,15 +254,15 @@ class PointBlipQformer(PointBlipBase):
         sim_t2i = sim_t2i / self.temp  # [batch_size, batch_size*num_gpu]
 
         rank = dist.get_rank()
-        bs = image.size(0)
+        bs = point.size(0)
         targets = torch.linspace(rank * bs, rank * bs + bs - 1, bs, dtype=int).to(
-            image.device
+            point.device
         )
 
         if "image_id" in samples.keys(): #coco retrieval finetuning
-            image_ids = samples["image_id"].view(-1,1)
-            image_ids_all = concat_all_gather(image_ids)
-            pos_idx = torch.eq(image_ids, image_ids_all.t()).float()       
+            point_ids = samples["pcd_id"].view(-1,1)
+            point_ids_all = concat_all_gather(point_ids)
+            pos_idx = torch.eq(point_ids, point_ids_all.t()).float()       
             sim_targets = pos_idx / pos_idx.sum(1,keepdim=True)   
             sim_targets = 0.9 * sim_targets + 0.1 * torch.ones_like(sim_targets) / sim_targets.size(1)
 
@@ -277,10 +278,10 @@ class PointBlipQformer(PointBlipBase):
         ###============== Image-text Matching ===================###
         text_input_ids_world = concat_all_gather(text_tokens.input_ids)                 # [bs, 32]
         text_attention_mask_world = concat_all_gather(text_tokens.attention_mask)       # [bs, 32]
-        image_embeds_world = all_gather_with_grad(image_embeds)                         # [bs, 257, 1408]
+        point_embeds_world = all_gather_with_grad(point_embeds)                         # [bs, 257, 1408]
         with torch.no_grad():
             if "image_id" in samples.keys():
-                mask = torch.eq(image_ids, image_ids_all.t())
+                mask = torch.eq(point_ids, point_ids_all.t())
                 sim_t2i.masked_fill_(mask, -10000)
                 sim_i2t.masked_fill_(mask, -10000)
             else:    
@@ -291,11 +292,11 @@ class PointBlipQformer(PointBlipBase):
             weights_i2t = F.softmax(sim_i2t, dim=1)
 
         # select a negative image for each text
-        image_embeds_neg = []
+        point_embeds_neg = []
         for b in range(bs):
             neg_idx = torch.multinomial(weights_t2i[b], 1).item()
-            image_embeds_neg.append(image_embeds_world[neg_idx])
-        image_embeds_neg = torch.stack(image_embeds_neg, dim=0)
+            point_embeds_neg.append(point_embeds_world[neg_idx])
+        point_embeds_neg = torch.stack(point_embeds_neg, dim=0)
 
         # select a negative text for each image
         text_ids_neg = []
@@ -318,23 +319,23 @@ class PointBlipQformer(PointBlipBase):
 
         query_tokens_itm = self.query_tokens.expand(text_ids_all.shape[0], -1, -1)          # [3*bs, 32, 768]
         query_atts_itm = torch.ones(query_tokens_itm.size()[:-1], dtype=torch.long).to(     # [3*bs, 32]
-            image.device
+            point.device
         )
         attention_mask_all = torch.cat([query_atts_itm, text_atts_all], dim=1)              # [3*bs, 32*2]
 
-        image_embeds_all = torch.cat(                                                       # [3*bs, 257, 1408]
-            [image_embeds, image_embeds_neg, image_embeds], dim=0
+        point_embeds_all = torch.cat(                                                       # [3*bs, 257, 1408]
+            [point_embeds, point_embeds_neg, point_embeds], dim=0
         )  # pos, neg, pos
-        image_atts_all = torch.ones(image_embeds_all.size()[:-1], dtype=torch.long).to(     # [3*bs, 257]
-            image.device
+        point_atts_all = torch.ones(point_embeds_all.size()[:-1], dtype=torch.long).to(     # [3*bs, 257]
+            point.device
         )
 
         output_itm = self.Qformer.bert(
             text_ids_all,
             query_embeds=query_tokens_itm,
             attention_mask=attention_mask_all,
-            encoder_hidden_states=image_embeds_all,
-            encoder_attention_mask=image_atts_all,
+            encoder_hidden_states=point_embeds_all,
+            encoder_attention_mask=point_atts_all,
             return_dict=True,
         )
 
@@ -345,7 +346,7 @@ class PointBlipQformer(PointBlipBase):
         itm_labels = torch.cat(                                                             # [3*bs] bs:1, 2*bs
             [torch.ones(bs, dtype=torch.long), torch.zeros(2 * bs, dtype=torch.long)],
             dim=0,
-        ).to(image.device)
+        ).to(point.device)
         loss_itm = F.cross_entropy(logits, itm_labels)
 
         ##================= Image Captioning ========================##
@@ -356,7 +357,7 @@ class PointBlipQformer(PointBlipBase):
         )
 
         query_atts = torch.ones(query_tokens.size()[:-1], dtype=torch.long).to(
-            image.device
+            point.device
         )
         attention_mask = torch.cat([query_atts, text_tokens.attention_mask], dim=1)
         lm_output = self.Qformer(
@@ -407,28 +408,28 @@ class PointBlipQformer(PointBlipBase):
         Returns:
             captions (list): A list of strings of length batch_size * num_captions.
         """
-        image = samples["image"]
-        image_embeds = self.ln_vision(self.visual_encoder(image))
+        point = samples["point"]
+        point_embeds = self.ln_vision(self.visual_encoder(point))
 
         if not use_nucleus_sampling:
-            image_embeds = image_embeds.repeat_interleave(num_beams, dim=0)
+            point_embeds = point_embeds.repeat_interleave(num_beams, dim=0)
         else:
             num_beams = 1
-        image_atts = torch.ones(image_embeds.size()[:-1], dtype=torch.long).to(
-            image.device
+        point_atts = torch.ones(point_embeds.size()[:-1], dtype=torch.long).to(
+            point.device
         )
 
         model_kwargs = {
-            "encoder_hidden_states": image_embeds,
-            "encoder_attention_mask": image_atts,
+            "encoder_hidden_states": point_embeds,
+            "encoder_attention_mask": point_atts,
         }
 
         input_ids = (
-            torch.LongTensor(image.size(0), 1)
+            torch.LongTensor(point.size(0), 1)
             .fill_(self.tokenizer.bos_token_id)
-            .to(image.device)
+            .to(point.device)
         )
-        query_tokens = self.query_tokens.expand(image_embeds.shape[0], -1, -1)
+        query_tokens = self.query_tokens.expand(point_embeds.shape[0], -1, -1)
 
         outputs = self.Qformer.generate(
             input_ids=input_ids,

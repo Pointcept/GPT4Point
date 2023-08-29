@@ -145,6 +145,8 @@ class BaseDatasetBuilder:
                         shutil.copyfile(src=src, dst=dst)
                     else:
                         logging.info("Using existing file {}.".format(dst))
+                elif os.path.isdir(storage_path):
+                    logging.info("Using existing folder {}.".format(storage_path))
                 else:
                     if os.path.isdir(storage_path):
                         # if only dirname is provided, suffix with basename of URL.
@@ -228,13 +230,16 @@ class BaseDatasetBuilder:
                 abs_ann_paths.append(ann_path)
             ann_paths = abs_ann_paths
 
-            # visual data storage path
-            vis_path = vis_info.storage
-            if not os.path.isabs(vis_path):
-                # vis_path = os.path.join(utils.get_cache_path(), vis_path)
-                vis_path = utils.get_cache_path(vis_path)
-            if not os.path.exists(vis_path):
-                warnings.warn("storage path {} does not exist.".format(vis_path))
+            if 'vis_info' in locals():
+                # visual data storage path
+                vis_path = vis_info.storage
+                if not os.path.isabs(vis_path):
+                    # vis_path = os.path.join(utils.get_cache_path(), vis_path)
+                    vis_path = utils.get_cache_path(vis_path)
+                if not os.path.exists(vis_path):
+                    warnings.warn("storage path {} does not exist.".format(vis_path))
+            else:
+                pass
 
             # points data storage path
             pts_path = pts_info.storage
@@ -246,6 +251,7 @@ class BaseDatasetBuilder:
 
             # create datasets
             dataset_cls = self.train_dataset_cls if is_train else self.eval_dataset_cls
+            vis_path = vis_path if 'vis_path' in locals() else None
             datasets[split] = dataset_cls(
                 vis_processor=vis_processor,
                 text_processor=text_processor,
@@ -253,6 +259,7 @@ class BaseDatasetBuilder:
                 ann_paths=ann_paths,
                 vis_root=vis_path,
                 pts_root=pts_path,
+                args=self.config.args if hasattr(self.config, "args") else None
             )
 
         return datasets

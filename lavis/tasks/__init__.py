@@ -17,6 +17,10 @@ from lavis.tasks.vqa import VQATask, GQATask, AOKVQATask
 from lavis.tasks.vqa_reading_comprehension import VQARCTask, GQARCTask
 from lavis.tasks.dialogue import DialogueTask
 
+from lavis.tasks.retrieval3d import (
+    Retrieval3dTask,
+)
+
 
 def setup_task(cfg):
     assert "task" in cfg.run_cfg, "Task name must be provided."

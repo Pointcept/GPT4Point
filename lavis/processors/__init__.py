@@ -17,6 +17,12 @@ from lavis.processors.blip_processors import (
     BlipImageEvalProcessor,
     BlipCaptionProcessor,
 )
+
+from lavis.processors.pointblip_processors import (
+    PointBlipObjaPointTrainProcessor,
+    PointBlipObjaPointEvalProcessor
+)
+
 # from lavis.processors.gpt_processors import (
 #     GPTVideoFeatureProcessor,
 #     GPTDialogueProcessor,
