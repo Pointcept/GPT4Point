@@ -37,7 +37,7 @@ Observably, the white captions exhibit a greater capacity to convey intricate de
 
 🔥 2023/08/13:  Two-stage Pre-training code of PointBLIP has been released.
 
-🔥 2023/08/13:  All datasets used and result files has been uploaded.
+🔥 2023/08/13:  Part of datasets used and result files has been uploaded.
 
 
 
