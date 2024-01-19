@@ -15,6 +15,8 @@
 
 ## 🔥 News
 
+🔥 2024/01/19:  We release the **Objaverse-XL (Point Cloud Format)** Extraction way.
+
 🔥 2024/01/10:  We release the **Objaverse-XL (Point Cloud Format)** Download way.
 
 🔥 2023/12/05:  The paper [GPT4Point (arxiv)](https://arxiv.org/abs/2312.02980) has been released, we unified the Point-language Understanding and Generation.
@@ -54,8 +56,8 @@ Please see the [Extract_Pointcloud](./Objaverse-xl_Download/shap-e/) for details
 Dataset and Data Engine
 - [✔] Release the arxiv and the project page.
 - [✔] Release the dataset (Objaverse-Xl) Download way.
-- [✔] Release the dataset (Objaverse-Xl) rendering (points) way. (2023.01.15)
-- [ ] Release dataset and data annotation engine (Pyramid-XL).
+- [✔] Release the dataset (Objaverse-Xl) rendering (points) way.
+- [ ] Release dataset and data annotation engine (Pyramid-XL). 
 - [ ] Add inferencing codes with checkpoints.
 - [ ] Add Huggingface Demo🤗.
 - [ ] Add training codes.
