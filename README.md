@@ -46,13 +46,15 @@ cd ./Objaverse-xl_Download
 Then please see the [Objaverse-xl_Download.md](./Objaverse-xl_Download/Objaverse-xl_Download.md) and the folder [Objaverse-xl_Download](./Objaverse-xl_Download) for details.
 
 
+### Objaverse-XL Point Cloud Data Generation
 
+Please see the [Extract_Pointcloud](./Objaverse-xl_Download/shap-e/) for details.
 
 ## 📝 TODO List
 Dataset and Data Engine
 - [✔] Release the arxiv and the project page.
 - [✔] Release the dataset (Objaverse-Xl) Download way.
-- [ ] Release the dataset (Objaverse-Xl) rendering (points) way. (2023.01.15)
+- [✔] Release the dataset (Objaverse-Xl) rendering (points) way. (2023.01.15)
 - [ ] Release dataset and data annotation engine (Pyramid-XL).
 - [ ] Add inferencing codes with checkpoints.
 - [ ] Add Huggingface Demo🤗.
