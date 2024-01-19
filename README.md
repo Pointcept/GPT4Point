@@ -43,7 +43,7 @@ This project presents **GPT4Point**<a>  <img src="./readme_figs/icon.png"  width
 cd ./Objaverse-xl_Download
 ```
 
-Then please see the [Objaverse-xl_Download.md](./Objaverse-xl_Download/Objaverse-xl_Download.md) and the folder [Objaverse-xl_Download](./Objaverse-xl_Download) for details.
+Then please see the folder [Objaverse-xl_Download](./Objaverse-xl_Download) for details.
 
 
 ### Objaverse-XL Point Cloud Data Generation
