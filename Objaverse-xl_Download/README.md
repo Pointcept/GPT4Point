@@ -43,19 +43,18 @@ GPT4Point
 │ ├── blender-3.2.2-linux-x64
 │ ├── download.py
 │ ├── annotations
-│ │ ├── ann.json
-│ │ ├── first_5w_rows.json
-│ │ ├── first_5w_postprocess.json
 │ │ ├── first5w_500_per_file
 │ │ │ ├── first5w_500_per_file_1.json
 │ │ │ ├── first5w_500_per_file_2.json
 │ │ │ ├── first5w_500_per_file_3.json
+│ │ ├── 1w_per_file
+│ │ │ ├── 1w_per_file_1.json
+│ │ │ ├── 1w_per_file_2.json
+│ │ │ ├── 1w_per_file_3.json
 ```
-***ann.json***: Raw annotations for all 9.7M objects.<br>
-***first_5w_rows.json***: Raw annotations for the first 50,000 objects.<br>
-***first_5w_postprocess.json***: Processed annotations for the first 50,000 objects.<br>
-***first5w_500_per_file*** Splits first_5w_postprocess.json into individual JSON files, each containing 500 objects. Here, we provide the download link for the first 50,000 objects.
 
+***first5w_500_per_file*** It has listed the first 50,000 objects, with each JSON file containing 500 objects.
+***1w_per_file*** Here, we have listed all 10 million (976W) objects, with each JSON file containing 10,000 objects."
 
 ## 📸 Download
 
