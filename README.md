@@ -15,6 +15,8 @@
 
 ## 🔥 News
 
+🔥 2024/02/27:  Our paper **GPT4Point** is accepted by CVPR'24!
+
 🔥 2024/01/19:  We release the **Objaverse-XL (Point Cloud Format)** Extraction way.
 
 🔥 2024/01/10:  We release the **Objaverse-XL (Point Cloud Format)** Download way.
