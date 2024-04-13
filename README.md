@@ -14,7 +14,7 @@
 </p>
 
 ## 🔥 News
-🔥 2024/04/13: We release the **GPT4Point** <span style="color:red">**v1.0**</span>, including training and evluation code.
+🔥 2024/04/13: We release the **GPT4Point** <span style="color:red">**v1.0**</span>, including training and 3D captioning evluation code.
 
 🔥 2024/04/05:  Our paper **GPT4Point** is selected as **CVPR'24 Highlight** 2.84% (324/11532) !
 
@@ -40,7 +40,7 @@ This project presents **GPT4Point**<a>  <img src="./readme_figs/icon.png"  width
 - **Object-level Point Cloud Benchmark.** Establishing a novel object-level point cloud benchmark with comprehensive evaluation metrics for 3D point cloud language tasks. This benchmark thoroughly assesses models' understanding capabilities and facilitates the evaluation of generated 3D objects.
 
 ## 🧭 Version
-- **v1.0 (2024/04/13).** We release the training and evaluation code.  
+- **v1.0 (2024/04/13).** We release the training and evaluation (3D captioning) code.  
 Dataset and text annotation: **Cap3D**.  
 LLM Model: **OPT 2.7b**
 
