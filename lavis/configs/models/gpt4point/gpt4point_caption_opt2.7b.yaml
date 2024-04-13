@@ -1,0 +1,58 @@
+ # Copyright (c) 2022, salesforce.com, inc.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+model:
+  arch: gpt4point_opt
+  load_finetuned: False
+
+  pretrained:
+    url: hugging_face
+    storage: ckpts/gpt4point_pretrain_stage1_cap3d.pth
+  finetuned:
+    url: hugging_face
+    storage: ckpts/gpt4point_pretrain_stage2_obja_opt2.7b.pth
+
+  ##  point encoder
+  point_model: ulip_point_bert
+  freeze_point_encoder: True
+  # from pointbert
+  point_encoder_cfg: 
+    NAME: PointTransformer
+    trans_dim: 1152
+    depth: 12
+    drop_path_rate: 0.1
+    cls_dim: 40
+    num_heads: 12
+    group_size: 48
+    num_group: 512
+    encoder_dims: 512
+    point_dims: 6
+    checkpoint_dirpath: 'others/point_encoder'
+    checkpoint: 'point_bert_pointllm.pt'
+
+  # Q-Former
+  num_query_token: 32
+
+  # OPT
+  opt_model: "facebook/opt-2.7b"
+
+  # generation configs
+  prompt: ""
+
+  # ckpts
+  ckpt_special_strs: ['opt_model', 'point_encoder', 'opt_proj'] # freeze: opt_model and point_encoder, training: opt_proj
+
+
+preprocess:
+  pts_processor:
+    train:
+      name: "gpt4point_cap3d_train"
+    eval:
+      name: "gpt4point_cap3d_eval"
+  text_processor:
+    train:
+      name: "blip_caption"
+    eval:
+      name: "blip_caption"

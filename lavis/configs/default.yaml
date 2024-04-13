@@ -7,4 +7,4 @@ env:
   # For default users
   # cache_root: "cache"
   # For internal use with persistent storage
-  cache_root: "/nvme/datasets/lavis" # change to you own dataset_root
+  cache_root: "data/" # change to you own dataset_root

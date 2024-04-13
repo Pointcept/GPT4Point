@@ -1,25 +1,26 @@
-# GPT4Point<a>  <img src="./readme_figs/icon.png"  width="30" /> </a>: A Unified Framework for Point-Language Understanding and Generation
+# <span style="color:lightblue">[CVPR2024 Highlight]</span> GPT4Point<a> <img src="./readme_figs/icon.png" width="30" /> </a>: A Unified Framework for Point-Language Understanding and Generation
+
 
 <p align="center">
-  	<a href="https://img.shields.io/badge/version-v0.1.0-blue">
-      <img alt="version" src="https://img.shields.io/badge/version-v0.1.0-blue?color=FF8000?color=009922" />
-    </a>
-  <a >
-       <img alt="Status-building" src="https://img.shields.io/badge/Status-building-blue" />
-  	</a>
-  <a >
-       <img alt="PRs-Welcome" src="https://img.shields.io/badge/PRs-Welcome-red" />
-  	</a>
-    <br />
+  <a href="http://arxiv.org/abs/2312.02980" target='_**blank**'>
+    <img src="https://img.shields.io/badge/arXiv-2312.02980📖-blue?">
+  </a> 
+  <a href="https://gpt4point.github.io/" target='_blank'>
+    <img src="https://img.shields.io/badge/Project-&#x1F680-blue">
+  </a>
+  <a href="https://gpt4point.github.io/" target='_blank'>
+    <img src="https://img.shields.io/badge/version-v1.0-green">
+  </a>
 </p>
 
 ## 🔥 News
+🔥 2024/04/13: We release the **GPT4Point** <span style="color:red">**v1.0**</span>, including training and evluation code.
 
-🔥 2024/02/27:  Our paper **GPT4Point** is accepted by CVPR'24!
+🔥 2024/04/05:  Our paper **GPT4Point** is selected as **CVPR'24 Highlight** 2.84% (324/11532) !
 
-🔥 2024/01/19:  We release the **Objaverse-XL (Point Cloud Format)** Extraction way.
+🔥 2024/02/27:  Our paper **GPT4Point** is accepted by **CVPR'24**!
 
-🔥 2024/01/10:  We release the **Objaverse-XL (Point Cloud Format)** Download way.
+🔥 2024/01/19:  We release the **Objaverse-XL (Point Cloud Format)** Download and Extraction way.
 
 🔥 2023/12/05:  The paper [GPT4Point (arxiv)](https://arxiv.org/abs/2312.02980) has been released, we unified the Point-language Understanding and Generation.
 
@@ -38,7 +39,75 @@ This project presents **GPT4Point**<a>  <img src="./readme_figs/icon.png"  width
 
 - **Object-level Point Cloud Benchmark.** Establishing a novel object-level point cloud benchmark with comprehensive evaluation metrics for 3D point cloud language tasks. This benchmark thoroughly assesses models' understanding capabilities and facilitates the evaluation of generated 3D objects.
 
-## 📦 Point Dataset and Data Annotation Engine
+## 🧭 Version
+- **v1.0 (2024/04/13).** We release the training and evaluation code.  
+Dataset and text annotation: **Cap3D**.  
+LLM Model: **OPT 2.7b**
+
+
+## 🔧 Installation
+
+1. (Optional) Creating conda environment
+
+```bash
+conda create -n gpt4point python=3.8
+conda activate gpt4point
+```
+
+2. install from [PyPI](https://pypi.org/project/salesforce-lavis/)
+```bash
+pip install salesforce-lavis
+```
+
+3. Or, for development, you may build from source
+
+```bash
+git clone https://github.com/salesforce/LAVIS.git
+cd LAVIS
+pip install -e .
+```
+## 📦 Data Preparation
+1. **Annotations**:
+All annotations will be downloaded automaticly through hugging_face.
+
+2. **Point Cloud**:
+You can download the Cap3D point cloud dataset through the google link.
+and the all folder strucure is:
+
+```bash
+GPT4Point
+├── data
+│   ├── cap3d
+│   │   ├── points
+│   │   │    ├── Cap3D_pcs_8192_xyz_w_color
+│   │   │    │    ├── <point cloud id>
+│   │   │    │    ├── ...
+│   │   │    │    ├── <point cloud id>
+│   │   ├── annotations
+│   │   │    ├── cap3d_caption_train.json
+│   │   │    ├── cap3d_caption_val.json
+│   │   │    ├── cap3d_real_and_chatgpt_caption_test.json
+│   │   │    ├── cap3d_real_and_chatgpt_caption_test_gt.json (for evaluation)
+```
+
+## 🚆 Training
+1. For stage 1 training:
+```bash
+python -m torch.distributed.run --master_port=32339 --nproc_per_node=4 train.py --cfg-path lavis/projects/gpt4point/train/pretrain_stage1_cap3d.yaml
+```
+
+2. For stage 2 training:
+```bash
+python -m torch.distributed.run --master_port=32339 --nproc_per_node=4 train.py --cfg-path lavis/projects/gpt4point/train/pretrain_stage2_cap3d_opt2.7b.yaml
+```
+
+## 🏁 Evaluation
+```bash
+python -m torch.distributed.run --master_port=32239 --nproc_per_node=1 evaluate.py --cfg-path lavis/projects/gpt4point/eval/captioning3d_cap3d_opt2.7b_eval.yaml
+```
+
+
+## 📦 Point Dataset and Data Annotation Engine (Optional)
 ### Objaverse-XL Point Dataset Download Way
 
 **Note that you should cd in the Objaverse-xl_Download directory.**
@@ -59,11 +128,9 @@ Dataset and Data Engine
 - [✔] Release the arxiv and the project page.
 - [✔] Release the dataset (Objaverse-Xl) Download way.
 - [✔] Release the dataset (Objaverse-Xl) rendering (points) way.
+- [ ] Release more models.
 - [ ] Release dataset and data annotation engine (Pyramid-XL). 
-- [ ] Add inferencing codes with checkpoints.
 - [ ] Add Huggingface Demo🤗.
-- [ ] Add training codes.
-- [ ] Add evaluation codes.
 - [ ] Add gradio demo codes.
 
 
@@ -72,13 +139,11 @@ Dataset and Data Engine
 If you find our work helpful, please cite:
 
 ```bibtex
-@misc{qi2023gpt4point,
-  title={GPT4Point: A Unified Framework for Point-Language Understanding and Generation}, 
+@inproceedings{GPT4Point,
+  title={GPT4Point: A Unified Framework for Point-Language Understanding and Generation},
   author={Zhangyang Qi and Ye Fang and Zeyi Sun and Xiaoyang Wu and Tong Wu and Jiaqi Wang and Dahua Lin and Hengshuang Zhao},
-  year={2023},
-  eprint={2312.02980},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
+  booktitle={CVPR},
+  year={2024},
 }
 ```
 

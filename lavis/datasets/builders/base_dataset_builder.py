@@ -14,12 +14,11 @@ import lavis.common.utils as utils
 import torch.distributed as dist
 from lavis.common.dist_utils import is_dist_avail_and_initialized, is_main_process
 from lavis.common.registry import registry
-from lavis.datasets.data_utils import extract_archive
 from lavis.processors.base_processor import BaseProcessor
 from omegaconf import OmegaConf
 import omegaconf
 from torchvision.datasets.utils import download_url
-
+from huggingface_hub import hf_hub_download
 
 class BaseDatasetBuilder:
     train_dataset_cls, eval_dataset_cls = None, None
@@ -38,7 +37,6 @@ class BaseDatasetBuilder:
 
         self.data_type = self.config.data_type
 
-        self.vis_processors = {"train": BaseProcessor(), "eval": BaseProcessor()}
         self.text_processors = {"train": BaseProcessor(), "eval": BaseProcessor()}
         self.pts_processors = {"train": BaseProcessor(), "eval": BaseProcessor()}
 
@@ -46,9 +44,8 @@ class BaseDatasetBuilder:
         # download, split, etc...
         # only called on 1 GPU/TPU in distributed
 
-        # MOD no download
-        # if is_main_process():
-        #     self._download_data()
+        if is_main_process():
+            self._download_data()
 
         if is_dist_avail_and_initialized():
             dist.barrier()
@@ -60,16 +57,8 @@ class BaseDatasetBuilder:
         return datasets
 
     def build_processors(self):
-        vis_proc_cfg = self.config.get("vis_processor")
         txt_proc_cfg = self.config.get("text_processor")
         pts_proc_cfg = self.config.get("pts_processor")
-
-        if vis_proc_cfg is not None:
-            vis_train_cfg = vis_proc_cfg.get("train")
-            vis_eval_cfg = vis_proc_cfg.get("eval")
-
-            self.vis_processors["train"] = self._build_proc_from_cfg(vis_train_cfg)
-            self.vis_processors["eval"] = self._build_proc_from_cfg(vis_eval_cfg)
 
         if txt_proc_cfg is not None:
             txt_train_cfg = txt_proc_cfg.get("train")
@@ -99,12 +88,12 @@ class BaseDatasetBuilder:
 
     def _download_data(self):
         self._download_ann()
-        self._download_vis()
+        self._download_pts()
 
     def _download_ann(self):
         """
         Download annotation files if necessary.
-        All the vision-language datasets should have annotations of unified format.
+        All the point-language datasets should have annotations of unified format.
 
         storage_path can be:
           (1) relative/absolute: will be prefixed with env.cache_root to make full path if relative.
@@ -155,10 +144,13 @@ class BaseDatasetBuilder:
                         )
                     else:
                         filename = os.path.basename(storage_path)
+                    
+                    if url_or_filename == 'hugging_face':
+                        hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=filename, repo_type="dataset", local_dir=dirname)
+                    else: 
+                        download_url(url=url_or_filename, root=dirname, filename=filename)
 
-                    download_url(url=url_or_filename, root=dirname, filename=filename)
-
-    def _download_vis(self):
+    def _download_pts(self):
         if isinstance(self.data_type, omegaconf.listconfig.ListConfig):
             pass
         else:
@@ -170,9 +162,9 @@ class BaseDatasetBuilder:
             if not os.path.exists(storage_path):
                 warnings.warn(
                     f"""
-                    The specified path {storage_path} for visual/others inputs does not exist.
-                    Please provide a correct path to the visual/others inputs or
-                    refer to datasets/download_scripts/README.md for downloading instructions.
+                    The specified path {storage_path} for point inputs does not exist.
+                    Please provide a correct path to the point inputs or
+                    refer to README.md for downloading instructions.
                     """
                 )
 
@@ -187,8 +179,6 @@ class BaseDatasetBuilder:
         build_info = self.config.build_info
 
         ann_info = build_info.annotations
-        if 'images' in self.data_type:
-            vis_info = build_info.get('images')
         if 'points' in self.data_type:
             pts_info = build_info.get('points')
 
@@ -200,11 +190,6 @@ class BaseDatasetBuilder:
             is_train = split == "train"
 
             # processors
-            vis_processor = (
-                self.vis_processors["train"]
-                if is_train
-                else self.vis_processors["eval"]
-            )
             text_processor = (
                 self.text_processors["train"]
                 if is_train
@@ -228,31 +213,25 @@ class BaseDatasetBuilder:
                 abs_ann_paths.append(ann_path)
             ann_paths = abs_ann_paths
 
-            # visual data storage path
-            vis_path = vis_info.storage
-            if not os.path.isabs(vis_path):
-                # vis_path = os.path.join(utils.get_cache_path(), vis_path)
-                vis_path = utils.get_cache_path(vis_path)
-            if not os.path.exists(vis_path):
-                warnings.warn("storage path {} does not exist.".format(vis_path))
-
-            # points data storage path
-            pts_path = pts_info.storage
-            if not os.path.isabs(pts_path):
-                # vis_path = os.path.join(utils.get_cache_path(), vis_path)
-                pts_path = utils.get_cache_path(pts_path)
-            if not os.path.exists(pts_path):
-                warnings.warn("storage path {} does not exist.".format(pts_path))
+            if 'pts_info' in locals():
+                # point data storage path
+                pts_path = pts_info.storage
+                if not os.path.isabs(pts_path):
+                    # pts_path = os.path.join(utils.get_cache_path(), pts_path)
+                    pts_path = utils.get_cache_path(pts_path)
+                if not os.path.exists(pts_path):
+                    warnings.warn("storage path {} does not exist.".format(pts_path))
+            else:
+                pass
 
             # create datasets
             dataset_cls = self.train_dataset_cls if is_train else self.eval_dataset_cls
             datasets[split] = dataset_cls(
-                vis_processor=vis_processor,
                 text_processor=text_processor,
                 pts_processor=pts_processor,
                 ann_paths=ann_paths,
-                vis_root=vis_path,
                 pts_root=pts_path,
+                args=self.config.args if hasattr(self.config, "args") else None
             )
 
         return datasets

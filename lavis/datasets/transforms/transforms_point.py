@@ -1,14 +1,25 @@
 import numpy as np
 
 
-def pc_norm(pc):
+def pc_norm_with_color(pc):
     """ pc: NxC, return NxC """
-    centroid = np.mean(pc, axis=0)
-    pc = pc - centroid
-    m = np.max(np.sqrt(np.sum(pc ** 2, axis=1)))
-    pc = pc / m
-    return pc
+    if pc.shape[1] == 3:
+        centroid = np.mean(pc, axis=0)
+        pc = pc - centroid
+        m = np.max(np.sqrt(np.sum(pc ** 2, axis=1)))
+        pc = pc / m
+    else:
+        assert pc.shape[1] == 6
+        pc_xyz = pc[:, :3]
+        centroid = np.mean(pc_xyz, axis=0)
+        pc_xyz = pc_xyz - centroid
+        m = np.max(np.sqrt(np.sum(pc_xyz ** 2, axis=1)))
+        pc_xyz = pc_xyz / m
 
+        pc_color = pc[:, -3:]
+        pc_color = (pc_color - 0.5) * 2
+        pc = np.concatenate((pc_xyz, pc_color), axis=1)
+    return pc
 
 def random_point_dropout(batch_pc, max_dropout_ratio=0.875):
     ''' batch_pc: BxNx3 '''

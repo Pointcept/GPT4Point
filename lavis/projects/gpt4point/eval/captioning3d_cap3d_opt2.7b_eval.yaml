@@ -1,0 +1,40 @@
+ # Copyright (c) 2023, pjlab.
+ # All rights reserved.
+ # SPDX-License-Identifier: BSD-3-Clause
+ # For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+
+model:
+  arch: gpt4point_opt
+  model_type: gpt4point_opt2.7b
+  use_grad_checkpoint: False
+  load_finetuned: True
+  ckpt_special_strs: ['point_encoder', 'pc_projection'] # actually it is only 
+
+datasets:
+  cap3d_captioning3d:
+   text_processor:
+       eval:
+         name: "blip_caption"
+         prompt: "a 3D point cloud of "
+
+run:
+  task: captioning3d
+  # optimizer
+  batch_size_train: 32
+  batch_size_eval: 16
+  num_workers: 4
+
+  max_len: 30
+  min_len: 8
+  num_beams: 5
+
+  seed: 42
+  output_dir: "output/GPT4Point/caption3d_cap3d_opt2.7b_eval"
+
+  evaluate: True
+  test_splits: ["test"]
+
+  device: "cuda"
+  world_size: 1
+  dist_url: "env://"
+  distributed: True

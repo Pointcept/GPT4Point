@@ -4,6 +4,8 @@
  SPDX-License-Identifier: BSD-3-Clause
  For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/BSD-3-Clause
 """
+import sys
+sys.path.insert(0, '../')
 
 import argparse
 import os
@@ -17,7 +19,7 @@ import lavis.tasks as tasks
 from lavis.common.config import Config
 from lavis.common.dist_utils import get_rank, init_distributed_mode
 from lavis.common.logger import setup_logger
-from lavis.common.optims import (
+from lavis.common.optims import (       # here is for registry.
     LinearWarmupCosineLRScheduler,
     LinearWarmupStepLRScheduler,
 )
@@ -36,7 +38,7 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Training")
 
     parser.add_argument("--cfg-path", required=True, help="path to configuration file.")
-    parser.add_argument("--local_rank", type=int, default=0)
+    parser.add_argument("--local-rank", type=int, default=0)
     parser.add_argument(
         "--options",
         nargs="+",

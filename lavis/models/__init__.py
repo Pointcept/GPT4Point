@@ -12,20 +12,16 @@ from lavis.common.registry import registry
 
 from lavis.models.base_model import BaseModel
 
-from lavis.models.point_blip_models.point_blip_opt import PointBlipOPT
-from lavis.models.point_blip_models.point_blip_qformer import PointBlipQformer
-from lavis.models.point_blip_models.point_blip_image_text_matching import Blip2ITM
-
-from lavis.models.med import XBertLMHeadDecoder
-from lavis.models.vit import VisionTransformerEncoder
+from lavis.models.gpt4point_models.gpt4point_opt import GPT4Point_OPT
+from lavis.models.gpt4point_models.gpt4point_qformer import GPT4Point_Qformer
 
 from lavis.processors.base_processor import BaseProcessor
 
 
 __all__ = [
     "load_model",
-    "PointBlipOPT",
-    "PointBlipQformer"
+    "GPT4Point_OPT",
+    "GPT4Point_Qformer"
 ]
 
 
@@ -73,7 +69,7 @@ def load_preprocess(config):
         config (dict): preprocessor configs.
 
     Returns:
-        vis_processors (dict): preprocessors for visual inputs.
+        pts_processors (dict): preprocessors for visual inputs.
         txt_processors (dict): preprocessors for text inputs.
 
         Key is "train" or "eval" for processors used in training and evaluation respectively.
@@ -86,21 +82,21 @@ def load_preprocess(config):
             else BaseProcessor()
         )
 
-    vis_processors = dict()
+    pts_processors = dict()
     txt_processors = dict()
 
-    vis_proc_cfg = config.get("vis_processor")
+    pts_proc_cfg = config.get("pts_processor")
     txt_proc_cfg = config.get("text_processor")
 
-    if vis_proc_cfg is not None:
-        vis_train_cfg = vis_proc_cfg.get("train")
-        vis_eval_cfg = vis_proc_cfg.get("eval")
+    if pts_proc_cfg is not None:
+        pts_train_cfg = pts_proc_cfg.get("train")
+        pts_eval_cfg = pts_proc_cfg.get("eval")
     else:
-        vis_train_cfg = None
-        vis_eval_cfg = None
+        pts_train_cfg = None
+        pts_eval_cfg = None
 
-    vis_processors["train"] = _build_proc_from_cfg(vis_train_cfg)
-    vis_processors["eval"] = _build_proc_from_cfg(vis_eval_cfg)
+    pts_processors["train"] = _build_proc_from_cfg(pts_train_cfg)
+    pts_processors["eval"] = _build_proc_from_cfg(pts_eval_cfg)
 
     if txt_proc_cfg is not None:
         txt_train_cfg = txt_proc_cfg.get("train")
@@ -112,7 +108,7 @@ def load_preprocess(config):
     txt_processors["train"] = _build_proc_from_cfg(txt_train_cfg)
     txt_processors["eval"] = _build_proc_from_cfg(txt_eval_cfg)
 
-    return vis_processors, txt_processors
+    return pts_processors, txt_processors
 
 
 def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu"):
@@ -131,7 +127,7 @@ def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu"):
 
     Returns:
         model (torch.nn.Module): model.
-        vis_processors (dict): preprocessors for visual inputs.
+        pts_processors (dict): preprocessors for point inputs.
         txt_processors (dict): preprocessors for text inputs.
     """
     model_cls = registry.get_model_class(name)
@@ -147,9 +143,9 @@ def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu"):
     if cfg is not None:
         preprocess_cfg = cfg.preprocess
 
-        vis_processors, txt_processors = load_preprocess(preprocess_cfg)
+        pts_processors, txt_processors = load_preprocess(preprocess_cfg)
     else:
-        vis_processors, txt_processors = None, None
+        pts_processors, txt_processors = None, None
         logging.info(
             f"""No default preprocess for model {name} ({model_type}).
                 This can happen if the model is not finetuned on downstream datasets,
@@ -160,7 +156,7 @@ def load_model_and_preprocess(name, model_type, is_eval=False, device="cpu"):
     if device == "cpu" or device == torch.device("cpu"):
         model = model.float()
 
-    return model.to(device), vis_processors, txt_processors
+    return model.to(device), pts_processors, txt_processors
 
 
 class ModelZoo:

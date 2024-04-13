@@ -1,0 +1,47 @@
+ # Copyright (c) 2023. pjlab.
+ # All rights reserved.
+
+
+model:
+  arch: pretrain
+  load_finetuned: False
+
+  pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained.pth"
+  finetuned: "" # it can only be
+  ##  point encoder
+  point_model: ulip_point_bert
+  freeze_point_encoder: True
+  # from pointbert
+  point_encoder_cfg: 
+    NAME: PointTransformer
+    trans_dim: 1152
+    depth: 12
+    drop_path_rate: 0.1
+    cls_dim: 40
+    num_heads: 12
+    group_size: 48
+    num_group: 512
+    encoder_dims: 512
+    point_dims: 6
+    checkpoint_dirpath: 'others/point_encoder'
+    checkpoint: 'point_bert_pointllm.pt'
+
+  # Q-Former
+  num_query_token: 32
+
+  # ckpts_special_strs for pretrain
+  ckpt_special_strs: ['point_encoder', 'pc_projection'] # freeze: point_encoder, training: pc_projection
+
+
+preprocess:
+  pts_processor:
+    train:
+      name: "gpt4point_cap3d_train"
+    eval:
+      name: "gpt4point_cap3d_eval"
+  text_processor:
+    train:
+      name: "blip_caption"
+    eval:
+      name: "blip_caption"
+

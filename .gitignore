@@ -1,4 +1,4 @@
-# BLIP-3D
+# GPT4Point
 *.json
 .vscode/*
 .vscode
@@ -6,6 +6,7 @@ data/objaverse/*
 data/objaverse
 lavis/output/*
 data/*
+ckpts/*
 model/*
 *.pth
 *.pt

@@ -360,7 +360,6 @@ class RunnerBase:
             # training phase
             if not self.evaluate_only:
                 logging.info("Start training")
-                # self._save_checkpoint(cur_epoch, is_best=False)                 # at the beginning
                 train_stats = self.train_epoch(cur_epoch)
                 self.log_stats(split_name="train", stats=train_stats)
 
@@ -561,26 +560,10 @@ class RunnerBase:
         Save the checkpoint at the current epoch.
         """
         model_no_ddp = self.unwrap_dist_model(self.model)
-        # param_grad_dic = {
-        #     k: v.requires_grad for (k, v) in model_no_ddp.named_parameters()
-        # }
-        # with open('/home/qizhangyang/others/running_point_qformer_grad.json', 'w') as file: 
-        #     json.dump(param_grad_dic, file)
-        # param_grad_dic = {}
-        # for (k, v) in model_no_ddp.named_parameters():
-        #     if k == 'Qformer.cls.predictions.decoder.weight':
-        #         print(1)
-        #     param_grad_dic.update({k : v.requires_grad})
         state_dict = model_no_ddp.state_dict()
-        for k in list(state_dict.keys()):
-            # if k == 'Qformer.cls.predictions.decoder.weight':
-            #     print(1)
-            if k in param_grad_dic.keys() and not param_grad_dic[k]:
-                # delete parameters that do not require gradient
-                pass
-                # del state_dict[k]
+        filtered_state_dict = {k: v for k, v in state_dict.items() if not any(s in k for s in self.config.config.run.delete_state_dict)}
         save_obj = {
-            "model": state_dict,
+            "model": filtered_state_dict,
             "optimizer": self.optimizer.state_dict(),
             "config": self.config.to_dict(),
             "scaler": self.scaler.state_dict() if self.scaler else None,

@@ -14,20 +14,17 @@ from torch.utils.data.dataloader import default_collate
 
 class BaseDataset(Dataset):
     def __init__(
-        self, vis_processor=None, text_processor=None, pts_processor=None, vis_root=None, pts_root=None, ann_paths=[]
+        self, text_processor=None, pts_processor=None, pts_root=None, ann_paths=[]
     ):
         """
-        vis_root (string): Root directory of images (e.g. coco/images/)
         ann_root (string): directory to store the annotation file
         """
-        self.vis_root = vis_root # '/nvme/datasets/lavis/shapenet/images/'
-        self.pts_root = pts_root # '/nvme/datasets/lavis/shapenet/points/'
+        self.pts_root = pts_root 
 
-        self.annotation = []     # list(52470): 
+        self.annotation = []
         for ann_path in ann_paths:
             self.annotation.extend(json.load(open(ann_path, "r")))
 
-        self.vis_processor = vis_processor
         self.text_processor = text_processor
         self.pts_processor = pts_processor
 
@@ -39,8 +36,7 @@ class BaseDataset(Dataset):
     def collater(self, samples):
         return default_collate(samples)
 
-    def set_processors(self, vis_processor, text_processor, pts_processor):
-        self.vis_processor = vis_processor
+    def set_processors(self, text_processor, pts_processor):
         self.text_processor = text_processor
         self.pts_processor = pts_processor
 

@@ -32,8 +32,14 @@ class BaseModel(nn.Module):
 
         This should expect no mismatch in the model keys and the checkpoint keys.
         """
-
-        if is_url(url_or_filename):
+        if len(url_or_filename)==2 and url_or_filename['url'] == 'hugging_face':
+            if os.path.exists(url_or_filename['storage']):
+                checkpoint = torch.load(url_or_filename['storage'], map_location="cpu")
+            else:
+                ckpt_directory, ckpt_filename = os.path.split(url_or_filename['storage'])
+                hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=ckpt_filename, local_dir=ckpt_directory)
+                checkpoint = torch.load(url_or_filename['storage'], map_location="cpu")
+        elif is_url(url_or_filename):
             cached_file = download_cached_file(
                 url_or_filename, check_hash=False, progress=True
             )
@@ -48,9 +54,11 @@ class BaseModel(nn.Module):
         else:
             state_dict = checkpoint
 
-        msg = self.load_state_dict(state_dict, strict=False)
+        filtered_state_dict = self.check_model_checkpoint_consistency(state_dict, special_strs=self.ckpt_special_strs)
+        msg = self.load_state_dict(filtered_state_dict, strict=False)
 
-        logging.info("Missing keys {}".format(msg.missing_keys))
+        logging.info("Missing keys {}".format([item for item in msg.missing_keys if 'point_encoder' not in item]))
+        logging.info("Unexpected keys {}".format([item for item in msg.unexpected_keys if 'point_encoder' not in item]))
         logging.info("load checkpoint from %s" % url_or_filename)
 
         return msg
@@ -134,6 +142,25 @@ class BaseModel(nn.Module):
         else:
             return tot
 
+    def check_model_checkpoint_consistency(self, ckpt_state_dict, special_strs=None):
+        """
+        Maintain all checkpoint keys. Ignore keys with specific endings if absent. 
+        Raise exception for model keys not in checkpoint unless ignored.
+        ckpt: The state dictionary of the checkpoint.
+        model_state_dict: The state dictionary of the model.
+        special_endings: A list of specific endings of strings to be ignored.
+        """
+        filtered_ckpt = {}
+        special_modules =[]
+        for key in self.state_dict().keys():
+            if key in ckpt_state_dict and not any(special_str in key for special_str in special_strs):
+                filtered_ckpt[key] = ckpt_state_dict[key]
+            elif any(special_str in key for special_str in special_strs):
+                special_modules.append(key)
+                continue
+            else:
+                raise KeyError(f"Key '{key}' not found in checkpoint and does not match any special endings.")
+        return filtered_ckpt
 
 class BaseEncoder(nn.Module):
     """
