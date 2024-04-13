@@ -33,12 +33,8 @@ class BaseModel(nn.Module):
         This should expect no mismatch in the model keys and the checkpoint keys.
         """
         if len(url_or_filename)==2 and url_or_filename['url'] == 'hugging_face':
-            if os.path.exists(url_or_filename['storage']):
-                checkpoint = torch.load(url_or_filename['storage'], map_location="cpu")
-            else:
-                ckpt_directory, ckpt_filename = os.path.split(url_or_filename['storage'])
-                hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=ckpt_filename, local_dir=ckpt_directory)
-                checkpoint = torch.load(url_or_filename['storage'], map_location="cpu")
+            model_path = hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=url_or_filename['storage'])
+            checkpoint = torch.load(model_path, map_location="cpu")
         elif is_url(url_or_filename):
             cached_file = download_cached_file(
                 url_or_filename, check_hash=False, progress=True

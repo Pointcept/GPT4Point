@@ -7,7 +7,6 @@ model:
   arch: gpt4point
   model_type: pretrain
   load_pretrained: True
-  pretrained: "https://storage.googleapis.com/sfr-vision-language-research/LAVIS/models/BLIP2/blip2_pretrained.pth"
   freeze_point_encoder: True
 
 datasets:       

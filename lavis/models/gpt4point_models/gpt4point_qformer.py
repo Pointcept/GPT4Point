@@ -28,7 +28,7 @@ class GPT4Point_Qformer(GPT4Point_Base):
     """
 
     PRETRAINED_MODEL_CONFIG_DICT = {
-        "pretrain": "configs/models/gpt4point/gpt4point_pretrain.yaml",
+        "pretrain": "configs/models/gpt4point/gpt4point_stage1.yaml",
     }
 
     def __init__(
