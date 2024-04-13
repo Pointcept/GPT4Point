@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="http://arxiv.org/abs/2312.02980" target='_**blank**'>
-    <img src="https://img.shields.io/badge/arXiv-2312.02980📖-blue?">
+    <img src="https://img.shields.io/badge/arXiv paper-2312.02980📖-blue?">
   </a> 
   <a href="https://gpt4point.github.io/" target='_blank'>
     <img src="https://img.shields.io/badge/Project-&#x1F680-blue">
