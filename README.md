@@ -71,7 +71,7 @@ pip install -e .
 All annotations will be downloaded automaticly through hugging_face.
 
 2. **Point Cloud**:
-You can download the Cap3D point cloud dataset through the google link.
+You can download the **Cap3D** point cloud dataset through the google link.
 and the all folder strucure is:
 
 ```bash
