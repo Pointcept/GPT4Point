@@ -128,10 +128,11 @@ Dataset and Data Engine
 - [✔] Release the arxiv and the project page.
 - [✔] Release the dataset (Objaverse-Xl) Download way.
 - [✔] Release the dataset (Objaverse-Xl) rendering (points) way.
-- [ ] Release more models.
+- [✔] Release pretrain training code and 3D captioning val code.
 - [ ] Release dataset and data annotation engine (Pyramid-XL). 
-- [ ] Add Huggingface Demo🤗.
-- [ ] Add gradio demo codes.
+- [ ] Release more evaluation code.
+- [ ] Release more trainingn code.
+- [ ] Release more models.
 
 
 ## 🔗 Citation
