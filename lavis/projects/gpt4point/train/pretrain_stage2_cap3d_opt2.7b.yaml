@@ -9,7 +9,6 @@ model:
   load_pretrained: True
   # intialize stage 2 pretraining from stage 1 pretrained model
   pretrained: 
-    url: hugging_face
     storage: gpt4point_pretrain_stage1_cap3d.pth
   freeze_point_encoder: True
 
@@ -52,3 +51,5 @@ run:
   world_size: 1
   dist_url: "env://"
   distributed: True
+
+  delete_state_dict: ['point_encoder', ]
