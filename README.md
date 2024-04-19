@@ -71,7 +71,7 @@ pip install -e .
 All annotations will be downloaded automaticly through hugging_face.
 
 2. **Point Cloud**:
-You can download the **Cap3D** point cloud dataset through the google link.
+You can download the **Cap3D** point cloud dataset through the [Google Drive Link](https://drive.google.com/drive/folders/18uqvjVeEqVIWsZFHxoIXjb1LkZ9ZNTh0?usp=sharing). You should unzip these 10 tar.gz files and then put them together.
 and the all folder strucure is:
 
 ```bash
@@ -80,9 +80,9 @@ GPT4Point
 │   ├── cap3d
 │   │   ├── points
 │   │   │    ├── Cap3D_pcs_8192_xyz_w_color
-│   │   │    │    ├── <point cloud id>
+│   │   │    │    ├── <point cloud id>.pkl
 │   │   │    │    ├── ...
-│   │   │    │    ├── <point cloud id>
+│   │   │    │    ├── <point cloud id>.pkl
 │   │   ├── annotations
 │   │   │    ├── cap3d_caption_train.json
 │   │   │    ├── cap3d_caption_val.json

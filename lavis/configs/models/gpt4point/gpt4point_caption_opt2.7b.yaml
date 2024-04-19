@@ -12,7 +12,7 @@ model:
     storage: gpt4point_pretrain_stage1_cap3d.pth
   finetuned:
     url: hugging_face
-    storage: gpt4point_pretrain_stage2_obja_opt2.7b.pth
+    storage: gpt4point_pretrain_stage2_cap3d_opt2.7b.pth
 
   ##  point encoder
   point_model: ulip_point_bert
