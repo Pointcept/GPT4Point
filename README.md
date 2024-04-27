@@ -1,4 +1,4 @@
-# <span style="color:lightblue">[CVPR2024 Highlight]</span> GPT4Point<a> <img src="./readme_figs/icon.png" width="30" /> </a>: A Unified Framework for Point-Language Understanding and Generation
+# <span style="color:lightblue">[CVPR2024]</span> GPT4Point<a> <img src="./readme_figs/icon.png" width="30" /> </a>: A Unified Framework for Point-Language Understanding and Generation
 
 
 <p align="center">
@@ -14,6 +14,8 @@
 </p>
 
 ## 🔥 News
+🔥 2024/04/27: We have modified the point encoder section, and now evaluation is more functional, although the training section still needs modification.
+
 🔥 2024/04/13: We release the **GPT4Point** <span style="color:red">**v1.0**</span>, including training and 3D captioning evluation code.
 
 🔥 2024/04/05:  Our paper **GPT4Point** is selected as **CVPR'24 Highlight** 2.84% (324/11532) !

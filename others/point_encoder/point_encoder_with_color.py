@@ -260,19 +260,19 @@ class PointTransformer_color(nn.Module):
         super().__init__()
         self.config = config
 
-        self.trans_dim = config.trans_dim               # 1152
-        self.depth = config.depth                       # 12
-        self.drop_path_rate = config.drop_path_rate     # 0.1
-        self.cls_dim = config.cls_dim                   # 40
-        self.num_heads = config.num_heads               # 12
+        self.trans_dim = config.trans_dim
+        self.depth = config.depth
+        self.drop_path_rate = config.drop_path_rate
+        self.cls_dim = config.cls_dim
+        self.num_heads = config.num_heads
 
-        self.group_size = config.group_size             # 48
-        self.num_group = config.num_group               # 512
-        self.point_dims = config.point_dims             # 6
+        self.group_size = config.group_size
+        self.num_group = config.num_group
+        self.point_dims = config.point_dims
         # grouper
         self.group_divider = Group(num_group=self.num_group, group_size=self.group_size)
         # define the encoder
-        self.encoder_dims = config.encoder_dims         # 512
+        self.encoder_dims = config.encoder_dims
         self.encoder = Encoder(encoder_channel=self.encoder_dims, point_input_dims=self.point_dims)
         # bridge encoder and transformer
         self.reduce_dim = nn.Linear(self.encoder_dims, self.trans_dim)
@@ -299,9 +299,7 @@ class PointTransformer_color(nn.Module):
         '''
         Load the weight.
         '''
-        pts_checkpoint_path = os.path.join(config.checkpoint_dirpath, config.checkpoint)
-        if not os.path.exists(pts_checkpoint_path):
-            hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=config.checkpoint, local_dir=config.checkpoint_dirpath)
+        pts_checkpoint_path = hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=config.checkpoint)
         self.load_model_from_ckpt(pts_checkpoint_path)
 
     def load_model_from_ckpt(self, bert_ckpt_path):
@@ -314,7 +312,7 @@ class PointTransformer_color(nn.Module):
         if incompatible.unexpected_keys:
             print('warning: unexpected_keys exists!')
 
-        print(f'[Transformer] Successful Loading the ckpt from {bert_ckpt_path}')
+        # print(f'[Transformer] Successful Loading the ckpt from {bert_ckpt_path}')
 
     def forward(self, pts):
         # divide the point cloud in the same form. This is important

@@ -16,6 +16,9 @@ from lavis.models.gpt4point_models.gpt4point import GPT4Point_Base, disabled_tra
 from transformers import AutoTokenizer, OPTForCausalLM
 import transformers
 
+from transformers.utils import logging as transformers_logging
+transformers_logging.set_verbosity_error()
+
 @registry.register_model("gpt4point_opt")
 class GPT4Point_OPT(GPT4Point_Base):
     """
@@ -52,6 +55,7 @@ class GPT4Point_OPT(GPT4Point_Base):
 
         '''Point: PIT'''
         self.point_encoder = GPT4Point_Base.init_point_encoder(point_model, point_encoder_cfg)
+        '''Point projection'''
         self.pc_projection = nn.Parameter(torch.empty(point_encoder_cfg['trans_dim'], 1408))      # cannot be frozen cause it is defined by ourselves.
 
         '''Q-former and delete some of it.'''
@@ -96,7 +100,6 @@ class GPT4Point_OPT(GPT4Point_Base):
                 param.requires_grad = False
             logging.info("freeze point encoder")
 
-            self.pc_projection.requires_grad = False
 
     def forward(self, samples):
         point = samples["point"]

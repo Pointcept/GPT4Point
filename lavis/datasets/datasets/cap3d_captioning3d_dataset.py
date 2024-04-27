@@ -163,7 +163,7 @@ def cap3d_captioning3d_eval(results_file, split):
     }
     if not os.path.exists(filepaths[split]):
         gt_directory, gt_filename = os.path.split(filepaths[split])
-        hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=filename, repo_type="dataset", local_dir=gt_directory)
+        hf_hub_download(repo_id="alexzyqi/GPT4Point", filename=gt_filename, repo_type="dataset", local_dir=gt_directory)
 
     annotation_file = filepaths[split]
 

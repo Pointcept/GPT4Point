@@ -14,7 +14,7 @@ import torch.nn as nn
 from lavis.common.dist_utils import download_cached_file, is_dist_avail_and_initialized
 from lavis.common.utils import get_abs_path, is_url
 from omegaconf import OmegaConf
-
+from huggingface_hub import hf_hub_download
 
 class BaseModel(nn.Module):
     """Base class for models."""
@@ -51,7 +51,7 @@ class BaseModel(nn.Module):
             state_dict = checkpoint
 
         filtered_state_dict = self.check_model_checkpoint_consistency(state_dict, special_strs=self.ckpt_special_strs)
-        msg = self.load_state_dict(filtered_state_dict, strict=False)
+        msg = self.load_state_dict(filtered_state_dict)
 
         logging.info("Missing keys {}".format([item for item in msg.missing_keys if 'point_encoder' not in item]))
         logging.info("Unexpected keys {}".format([item for item in msg.unexpected_keys if 'point_encoder' not in item]))

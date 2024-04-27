@@ -53,6 +53,7 @@ class GPT4Point_Qformer(GPT4Point_Base):
         self.tokenizer = self.init_tokenizer() # Bert tokenizer
         '''Point: PIT'''
         self.point_encoder = GPT4Point_Base.init_point_encoder(point_model, point_encoder_cfg)
+        '''Point projection'''
         self.pc_projection = nn.Parameter(torch.empty(point_encoder_cfg['trans_dim'], 1408))
         nn.init.normal_(self.pc_projection, std=1408 ** -0.5)
         '''Point Qformer'''

@@ -352,7 +352,6 @@ class RunnerBase:
 
         self.log_config()
 
-        self._save_checkpoint(0, is_best=True)
         # resume from checkpoint if specified
         if not self.evaluate_only and self.resume_ckpt_path is not None:
             self._load_checkpoint(self.resume_ckpt_path)

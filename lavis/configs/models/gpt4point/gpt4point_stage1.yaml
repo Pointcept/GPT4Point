@@ -14,17 +14,17 @@ model:
   # from pointbert
   point_encoder_cfg: 
     NAME: PointTransformer
-    trans_dim: 1152
+    trans_dim: 384
     depth: 12
     drop_path_rate: 0.1
     cls_dim: 40
-    num_heads: 12
-    group_size: 48
+    num_heads: 6
+    group_size: 32
     num_group: 512
-    encoder_dims: 512
+    encoder_dims: 256
     point_dims: 6
     checkpoint_dirpath: 'others/point_encoder'
-    checkpoint: 'point_bert_pointllm.pt'
+    checkpoint: 'point_encoder_pointbert_wcolor.pth'
 
   # Q-Former
   num_query_token: 32

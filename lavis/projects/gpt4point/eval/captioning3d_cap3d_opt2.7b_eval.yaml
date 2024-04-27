@@ -8,14 +8,17 @@ model:
   model_type: gpt4point_opt2.7b
   use_grad_checkpoint: False
   load_finetuned: True
-  ckpt_special_strs: ['point_encoder', 'pc_projection'] # actually it is only 
+  ckpt_special_strs: []
 
 datasets:
   cap3d_captioning3d:
-   text_processor:
-       eval:
-         name: "blip_caption"
-         prompt: "a 3D point cloud of "
+    text_processor:
+      eval:
+        name: "blip_caption"
+        prompt: "a 3D point cloud of "
+    pts_processor:
+      eval:
+        name: "gpt4point_cap3d_eval"
 
 run:
   task: captioning3d
